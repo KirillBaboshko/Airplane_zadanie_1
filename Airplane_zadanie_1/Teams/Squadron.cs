@@ -1,4 +1,5 @@
 ﻿using Airplane_zadanie_1.Airplanes;
+using Airplane_zadanie_1.Strategy;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,7 +10,7 @@ namespace Airplane_zadanie_1.Teams
     {
         private readonly List<Airplane> _members = new();
 
-        public Squadron(string name, ITargetingStrategy strategy)
+        public Squadron(String name, ITargetingStrategy strategy)
         {
             Name = name;
             Strategy = strategy;

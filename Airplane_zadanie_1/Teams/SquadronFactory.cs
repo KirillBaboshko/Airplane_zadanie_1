@@ -1,4 +1,5 @@
 ﻿using Airplane_zadanie_1.Airplanes;
+using Airplane_zadanie_1.Strategy;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,13 +15,13 @@ namespace Airplane_zadanie_1.Teams
         {
             Airplane airplane = create();
 
-            airplane.Gun = _warehouse.TakeRandomGun();
-            airplane.Armor = _warehouse.TakeRandomArmor();
-            airplane.Ammunition = _warehouse.TakeRandomAmmunition();
+            airplane.MontageGun(_warehouse.TakeRandomGun());
+            airplane.MontageArmor(_warehouse.TakeRandomArmor());
+            airplane.MontageAmmunition(_warehouse.TakeRandomAmmunition());
 
             return airplane;
         }
-        public Squadron CreateSquadron(string name, ITargetingStrategy strategy, params Func<Airplane>[] composition)
+        public Squadron CreateSquadron(String name, ITargetingStrategy strategy, params Func<Airplane>[] composition)
         {
             Squadron squadron = new(name, strategy);
 

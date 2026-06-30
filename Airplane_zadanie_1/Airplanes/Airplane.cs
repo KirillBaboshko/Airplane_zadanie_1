@@ -27,7 +27,7 @@ namespace Airplane_zadanie_1.Airplanes
         {
             _hp= hp;
             MaxHp = hp;
-            _weight= weight;
+            _weight= 0;
             MaxWeight = weight;
             BaseAccuracy = baseAccuracy;
             BaseDodgeChance=baseDodgeChance;
@@ -50,6 +50,40 @@ namespace Airplane_zadanie_1.Airplanes
         public Guns? Gun { get; set; }
         public Armors? Armor { get; set; }
         public Ammunitions? Ammunition { get; set; }
+
+        public void MontageGun(Guns? gun)
+        {
+            if ((MaxWeight-(_weight+ gun.Weight))>=0)
+            {
+                _weight += gun.Weight;
+                Gun = gun;
+            }
+            else
+            {
+                System.Console.WriteLine($"У самолета №{Id} перегруз, установка оружия невозможна!");
+            }
+        }
+        public void MontageArmor(Armors? armor)
+        {
+            if ((MaxWeight - (_weight + armor.Weight)) >= 0)
+            {
+                _weight += armor.Weight;
+                Armor = armor;
+            }
+            else
+            {
+                System.Console.WriteLine($"У самолета №{Id} перегруз, установка брони невозможна!");
+            }
+        }
+        public void MontageAmmunition(Ammunitions? ammo)
+        {
+            CountAmmo = 0;
+            while ((MaxWeight - (_weight + ammo.Weight)) >= 0)
+            {
+                CountAmmo++;
+            }
+            System.Console.WriteLine($"У самолета №{Id} боекомплект под завязку,удалось погрузить {CountAmmo} снарядов");
+        }
         public void Stan() { isStaned = !isStaned; }
         public void Mark() { isMarked = !isMarked; }
 
