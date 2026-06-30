@@ -1,9 +1,7 @@
 ﻿using Airplane_zadanie_1.Equipment.Ammunitions;
 using Airplane_zadanie_1.Equipment.Armors;
 using Airplane_zadanie_1.Equipment.Guns;
-using System;
-using System.Collections.Generic;
-using System.Text;
+
 
 namespace Airplane_zadanie_1.Teams
 {

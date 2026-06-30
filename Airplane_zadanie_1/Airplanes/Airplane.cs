@@ -2,10 +2,7 @@
 using Airplane_zadanie_1.Equipment.Armors;
 using Airplane_zadanie_1.Equipment.Guns;
 using Airplane_zadanie_1.Teams;
-using System;
-using System.Buffers.Text;
-using System.Collections.Generic;
-using System.Text;
+using static System.Console;
 
 namespace Airplane_zadanie_1.Airplanes
 {
@@ -60,7 +57,7 @@ namespace Airplane_zadanie_1.Airplanes
             }
             else
             {
-                System.Console.WriteLine($"У самолета №{Id} перегруз, установка оружия невозможна!");
+                WriteLine($"У самолета №{Id} перегруз, установка оружия невозможна!");
             }
         }
         public void MontageArmor(Armors? armor)
@@ -72,7 +69,7 @@ namespace Airplane_zadanie_1.Airplanes
             }
             else
             {
-                System.Console.WriteLine($"У самолета №{Id} перегруз, установка брони невозможна!");
+                WriteLine($"У самолета №{Id} перегруз, установка брони невозможна!");
             }
         }
         public void MontageAmmunition(Ammunitions? ammo)
@@ -84,7 +81,7 @@ namespace Airplane_zadanie_1.Airplanes
                 CountAmmo++;
                 _weight += ammo.Weight;
             }
-            System.Console.WriteLine($"У самолета №{Id} боекомплект под завязку,удалось погрузить {CountAmmo} снарядов");
+            WriteLine($"У самолета №{Id} боекомплект под завязку,удалось погрузить {CountAmmo} снарядов");
         }
         public void Stan() { isStaned = !isStaned; }
         public void Mark() { isMarked = !isMarked; }
@@ -160,7 +157,7 @@ namespace Airplane_zadanie_1.Airplanes
                     }
             }
             Die();
-            System.Console.WriteLine($"Самолет №{enemy.Id} попал с уроном {ReceivedDamage} по самолету №{this.Id}, осталось {this.HP} HP");
+            WriteLine($"Самолет №{enemy.Id} попал с уроном {ReceivedDamage} по самолету №{this.Id}, осталось {this.HP} HP");
             
     
         }
@@ -174,7 +171,7 @@ namespace Airplane_zadanie_1.Airplanes
                     {
                         if (target.TryDodge())
                         {
-                            System.Console.WriteLine($"Самолет №{Id} промах");
+                            WriteLine($"Самолет №{Id} промах");
                         }
                         else
                         {
@@ -192,7 +189,7 @@ namespace Airplane_zadanie_1.Airplanes
             }
             else
             {
-                System.Console.WriteLine($"Самолет №{Id} - боекомлект пуст");
+                WriteLine($"Самолет №{Id} - боекомлект пуст");
             }
 
         }

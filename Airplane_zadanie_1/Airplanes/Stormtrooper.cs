@@ -1,7 +1,4 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using static System.Console;
 
 namespace Airplane_zadanie_1.Airplanes
 {
@@ -21,7 +18,7 @@ namespace Airplane_zadanie_1.Airplanes
             }
 
             _cockpitUsed = true;
-            Console.WriteLine($"Самолет №{Id} держит удар бронированной кабиной (первый урон поглощён).");
+            WriteLine($"Самолет №{Id} держит удар бронированной кабиной (первый урон поглощён).");
             return true;
         }
     }

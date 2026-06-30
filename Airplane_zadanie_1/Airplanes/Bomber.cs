@@ -1,7 +1,5 @@
 ﻿using Airplane_zadanie_1.Equipment.Armors;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using static System.Console;
 
 namespace Airplane_zadanie_1.Airplanes
 {
@@ -26,7 +24,7 @@ namespace Airplane_zadanie_1.Airplanes
                 return false;
             }
 
-            System.Console.WriteLine($"Бомбардировщик №{Id} начал бомбардировку");
+            WriteLine($"Бомбардировщик №{Id} начал бомбардировку");
 
             foreach (Airplane enemy in enemies)
             {

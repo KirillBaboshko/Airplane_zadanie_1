@@ -1,8 +1,5 @@
 ﻿using Airplane_zadanie_1.Airplanes;
 using Airplane_zadanie_1.Strategy;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Airplane_zadanie_1.Teams
 {

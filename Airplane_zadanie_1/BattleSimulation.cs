@@ -1,8 +1,7 @@
 ﻿using Airplane_zadanie_1.Airplanes;
 using Airplane_zadanie_1.Teams;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using static System.Console;
+
 
 namespace Airplane_zadanie_1
 {
@@ -26,7 +25,7 @@ namespace Airplane_zadanie_1
             while (AliveSquadrons().Count > 1 && round < MaxRounds)
             {
                 round++;
-                System.Console.WriteLine($"Раунд {round}");
+                WriteLine($"Раунд {round}");
                 StartRound();
                 ExecuteRound();
                 Thread.Sleep(2500);
@@ -55,12 +54,6 @@ namespace Airplane_zadanie_1
                     squadron.CommanderTarget = null;
             }
         }
-
-        /// <summary>
-        /// Один честный ход: фиксируем порядок до начала стрельбы, далее каждый
-        /// живой самолёт действует один раз. Цели пересчитываются на лету,
-        /// чтобы не бить по уже сбитым.
-        /// </summary>
         private void ExecuteRound()
         {
             List<Airplane> order = _squadrons.SelectMany(s => s.AliveMembers).ToList();
@@ -74,7 +67,7 @@ namespace Airplane_zadanie_1
 
                 if (attacker.IsStaned())
                 {
-                    System.Console.WriteLine($"Самолет {attacker.Id} пропускает ход (двигатель заглушён).");
+                    WriteLine($"Самолет {attacker.Id} пропускает ход (двигатель заглушён).");
                     continue;
                 }
 
@@ -96,13 +89,13 @@ namespace Airplane_zadanie_1
 
         private void PrintRoster()
         {
-            System.Console.WriteLine("Состав эскадрилий");
+            WriteLine("Состав эскадрилий");
             foreach (Squadron squadron in _squadrons)
             {
-                System.Console.WriteLine($"{squadron.Name} — тактика «{squadron.Strategy.Name}»:");
+                WriteLine($"{squadron.Name} — тактика «{squadron.Strategy.Name}»:");
                 foreach (Airplane plane in squadron.Members)
                 {
-                    System.Console.WriteLine($"Самолет  №{plane.Id}");
+                    WriteLine($"Самолет  №{plane.Id}");
                 }
             }
         }
@@ -111,14 +104,14 @@ namespace Airplane_zadanie_1
         {
             List<Squadron> alive = AliveSquadrons();
 
-            System.Console.WriteLine("Бой окончен");
+            WriteLine("Бой окончен");
             if (alive.Count == 1)
             {
-                System.Console.WriteLine($"Победила эскадрилья «{alive[0].Name}» за {round} раунд(ов)!");
+                WriteLine($"Победила эскадрилья «{alive[0].Name}» за {round} раунд(ов)!");
             }
             else
             {
-                System.Console.WriteLine($"Ничья по лимиту в {MaxRounds} раундов.");
+                WriteLine($"Ничья по лимиту в {MaxRounds} раундов.");
             }
         }
     }

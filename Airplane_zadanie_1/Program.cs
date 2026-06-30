@@ -2,7 +2,6 @@
 using Airplane_zadanie_1.Airplanes;
 using Airplane_zadanie_1.Strategy;
 using Airplane_zadanie_1.Teams;
-using System.Text;
 
 Warehouse warehouse = new();
 SquadronFactory factory = new(warehouse);
