@@ -32,12 +32,12 @@ namespace Airplane_zadanie_1.Airplanes
             BaseAccuracy = baseAccuracy;
             BaseDodgeChance=baseDodgeChance;
             BaseArmor = baseArmor;
-            _Id++;
+            Id=++_Id;
 
         }
         public abstract TypeOfPlanes Type{  get; }
         public Squadron? Squadron { get; set; }
-        public Int32 Id => _Id;
+        public Int32 Id { get; }
         public Double Weight=> _weight;
         public Double HP => _hp;
         public Double MaxHp { get; }
@@ -78,9 +78,11 @@ namespace Airplane_zadanie_1.Airplanes
         public void MontageAmmunition(Ammunitions? ammo)
         {
             CountAmmo = 0;
+            Ammunition = ammo;
             while ((MaxWeight - (_weight + ammo.Weight)) >= 0)
             {
                 CountAmmo++;
+                _weight += ammo.Weight;
             }
             System.Console.WriteLine($"У самолета №{Id} боекомплект под завязку,удалось погрузить {CountAmmo} снарядов");
         }
@@ -96,6 +98,7 @@ namespace Airplane_zadanie_1.Airplanes
             if (isAlive && HP<=0.0)
             {
                 isAlive = false;
+                _hp = 0;
             }
         }
         public Double MarkBuff() {
@@ -138,10 +141,11 @@ namespace Airplane_zadanie_1.Airplanes
             {
                 return;
             }
+            //Console.WriteLine(enemy.Id);
             Double ReceivedDamage = enemy.Gun.Shot() + enemy.Ammunition.Damage * enemy.Gun.ShotCount;
             ReceivedDamage *= enemy.DamageMultiplierAgainst(this);
             ReceivedDamage -= ReceivedDamage * EffectiveArmor;
-            ChancheHP(ReceivedDamage);
+            ChancheHP(-ReceivedDamage);
             switch (enemy.Ammunition.Type)
             {
                 case TypeOfAmmunitions.Tracers:
@@ -155,8 +159,9 @@ namespace Airplane_zadanie_1.Airplanes
                         break;
                     }
             }
-            System.Console.WriteLine($"Самолет №{enemy.Id} попал с уроном {ReceivedDamage} по самолету №{this.Id}, осталось {this.HP} HP");
             Die();
+            System.Console.WriteLine($"Самолет №{enemy.Id} попал с уроном {ReceivedDamage} по самолету №{this.Id}, осталось {this.HP} HP");
+            
     
         }
         public virtual void Attack(Airplane target)
