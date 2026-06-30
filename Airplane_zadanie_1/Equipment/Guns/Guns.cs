@@ -18,6 +18,7 @@ namespace Airplane_zadanie_1.Equipment.Guns
         public abstract TypeOfGuns Type { get; }
         public abstract Int32 MinDamage {  get; }
         public abstract Int32 MaxDamage { get; }
+        public abstract Double Weight { get; }
         public Double AccuracyBuff { get; }
         public abstract Int32 ShotCount { get; }
         public Boolean IgnoreDodge => false;

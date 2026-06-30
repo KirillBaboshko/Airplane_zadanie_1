@@ -2,16 +2,17 @@
 
 namespace Airplane_zadanie_1.Equipment.Ammunitions
 {
-    public enum TypeOfAmunitions
+    public enum TypeOfAmmunitions
     {
         Tracers,
         Piercing,
         Explosive
     }
-    public abstract class Amunitions
+    public abstract class Ammunitions
     {
-        public abstract TypeOfAmunitions Type {  get; }
+        public abstract TypeOfAmmunitions Type {  get; }
         public abstract Double Damage { get; }
+        public abstract Double Weight { get; }
         public virtual void SpecialEffects(Airplane target) { }
     }
 }

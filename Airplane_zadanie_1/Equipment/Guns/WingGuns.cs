@@ -1,4 +1,4 @@
-﻿using Airplane_zadanie_1.Interfaces;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,5 +12,6 @@ namespace Airplane_zadanie_1.Equipment.Guns
         public override Int32 MaxDamage => 30;
         public override Int32 ShotCount => 2;
         public Double AccuracyBuff => -0.10;
+        public override Double Weight => 100.0;
     }
 }

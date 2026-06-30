@@ -9,5 +9,6 @@ namespace Airplane_zadanie_1.Equipment.Armors
     {
         public override TypeOfArmors Type => TypeOfArmors.ProtectedFuelTank;
         public override Double Protection => 0.15;
+        public override Double Weight => 500.0;
     }
 }

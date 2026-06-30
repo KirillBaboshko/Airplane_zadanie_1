@@ -1,15 +1,15 @@
 ﻿using Airplane_zadanie_1.Airplanes;
-using Airplane_zadanie_1.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Airplane_zadanie_1.Equipment.Ammunitions
 {
-    public class Piercing : Amunitions
+    public class Piercing : Ammunitions
     {
-        public override TypeOfAmunitions Type => TypeOfAmunitions.Piercing;
+        public override TypeOfAmmunitions Type => TypeOfAmmunitions.Piercing;
         public override Double Damage => 10.0;
-      
+        public override Double Weight => 50.0;
+
     }
 }

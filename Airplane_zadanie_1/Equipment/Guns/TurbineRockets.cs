@@ -1,4 +1,4 @@
-﻿using Airplane_zadanie_1.Interfaces;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,5 +14,6 @@ namespace Airplane_zadanie_1.Equipment.Guns
         public Boolean IgnoreDodge => true;
         public Boolean isReloaded => true;
         public static Int32 ReloadCount => 1;
+        public override Double Weight => 150.0;
     }
 }

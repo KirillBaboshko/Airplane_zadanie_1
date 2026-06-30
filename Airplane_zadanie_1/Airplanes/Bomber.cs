@@ -1,19 +1,42 @@
-﻿using Airplane_zadanie_1.Interfaces;
+﻿using Airplane_zadanie_1.Equipment.Armors;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Airplane_zadanie_1.Airplanes
 {
-    internal class Bomber:Airplane
+    public class Bomber : Airplane
     {
-        public int idOfType { get; } = 2;
-        public double HP { get; set; } = 680.0;
-        public IGun? gun { get; set; }
-        public IArmor? armor { get; set; }
-    
-        public double accuracy { get; set; } = 0.8;
-        public int idOfTeam { get; set; }
-        public double dodgeChance { get; set; } = 0.05;
+        private const double AreaBombChance = 0.10;
+        private const double AreaBombDamage = 15;
+
+        public Bomber() : base(hp: 680,weight:5000, baseDodgeChance: 0.05, baseAccuracy: 0.80, baseArmor:0.20) { }
+
+        public override TypeOfPlanes Type => TypeOfPlanes.Bomber;
+
+        public override bool TrySpecialAttack(IReadOnlyList<Airplane> enemies)
+        {
+            if (Armor is SpacedArmor)
+            {
+                return false;
+            }
+
+            if (!Rand.Chance(AreaBombChance))
+            {
+                return false;
+            }
+
+            System.Console.WriteLine($"Бомбардировщик №{Id} начал бомбардировку");
+
+            foreach (Airplane enemy in enemies)
+            {
+                if (enemy.IsAlive)
+                {
+                    enemy.ChancheHP(AreaBombDamage);
+                }
+            }
+
+            return true;
+        }
     }
 }
