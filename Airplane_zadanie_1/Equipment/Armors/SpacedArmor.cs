@@ -1,13 +1,13 @@
-﻿using Airplane_zadanie_1.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Airplane_zadanie_1.Equipment.Armors
 {
-    internal class SpacedArmor : IArmor
+    public class SpacedArmor : Armors
     {
-        public int id { get; } = 3;
-        public double armor { get; } = 0.25;
+        public override TypeOfArmors Type => TypeOfArmors.SpacedArmor;
+        public override Double Protection => 0.25;
+        public Double DodgeBuff => -0.10;
     }
 }

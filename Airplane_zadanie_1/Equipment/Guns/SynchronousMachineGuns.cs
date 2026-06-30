@@ -5,10 +5,12 @@ using System.Text;
 
 namespace Airplane_zadanie_1.Equipment.Guns
 {
-    internal class SynchronousMachineGuns:IGun
+    public class SynchronousMachineGuns:Guns
     {
-        public int id { get; } = 1;
-        public int minDamadge { get; } = 10;
-        public int maxDamadge { get; } = 15;
+        public override TypeOfGuns Type =>TypeOfGuns.SynchronousMachineGuns;
+        public override Int32 MinDamage => 10;
+        public override Int32 MaxDamage => 15;
+        public Double AccuracyBuff => 0.15;
+        public override Int32 ShotCount => 1;
     }
 }
