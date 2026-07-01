@@ -122,7 +122,7 @@ namespace Airplane_zadanie_1.Airplanes
         {
             return Rand.Chance(EffectiveDodgeChance);
         }
-        public virtual Double DamageMultiplierAgainst(Airplane target) => 1.0;
+        public virtual Double DamageMultiplierAgainst() => 1.0;
         protected virtual Boolean TryAbsorbHit() => false;
         public virtual void TrySpecialAttack(IReadOnlyList<Airplane> enemies) { }
         public void ChancheHP(Double value)
@@ -148,8 +148,7 @@ namespace Airplane_zadanie_1.Airplanes
             if (Gun != null && IsAlive && CountAmmo > 0)
             {
                 CountAmmo--;
-                WriteLine($"Самолет №{Id} - произвел выстрел");
-                return new Shot(this,Target,Gun,Ammunition);
+                return Gun.Shot(this);
             }
             WriteLine($"Самолет №{Id} - боекомлект пуст");
             return null;

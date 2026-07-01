@@ -8,7 +8,7 @@ namespace Airplane_zadanie_1.Equipment.Guns
         public override TypeOfGuns Type => TypeOfGuns.WingGuns;
         public override Int32 MinDamage => 20;
         public override Int32 MaxDamage => 30;
-        public override Int32 ShotCount => 2;
+        public override int Shots => 2;
         public Double AccuracyBuff => -0.10;
         public override Double Weight => 100.0;
     }

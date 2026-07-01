@@ -8,7 +8,7 @@ namespace Airplane_zadanie_1.Airplanes
 
         public override TypeOfPlanes Type => TypeOfPlanes.Fighter;
 
-        public override double DamageMultiplierAgainst(Airplane target)
-            => target.Type == TypeOfPlanes.Bomber ? 1.20 : 1.0;
+        public override double DamageMultiplierAgainst()
+            => Target.Type == TypeOfPlanes.Bomber ? 1.20 : 1.0;
     }
 }

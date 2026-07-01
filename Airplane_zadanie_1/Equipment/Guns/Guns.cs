@@ -1,5 +1,10 @@
 ﻿
 
+using Airplane_zadanie_1.Airplanes;
+using Airplane_zadanie_1.Equipment.Ammunitions;
+using Airplane_zadanie_1.Infrastructure;
+using static System.Console;
+
 namespace Airplane_zadanie_1.Equipment.Guns
 {
     public enum TypeOfGuns
@@ -10,35 +15,43 @@ namespace Airplane_zadanie_1.Equipment.Guns
     }
     public abstract class Guns
     {
+        private int _cooldown;
         public abstract TypeOfGuns Type { get; }
         public abstract Int32 MinDamage {  get; }
         public abstract Int32 MaxDamage { get; }
         public abstract Double Weight { get; }
         public Double AccuracyBuff { get; }
-        public abstract Int32 ShotCount { get; }
+        public virtual int Shots => 1;
         public Boolean IgnoreDodge => false;
-        public Boolean isReloaded => false;
-        public static Int32 ReloadCount { get; }
-        public Int32 Reload=ReloadCount;
-        public virtual Double Shot()
+        public virtual int ReloadTurns => 0;
+        public bool IsReady => _cooldown <= 0;
+
+        public void RegisterShot() => _cooldown = ReloadTurns + 1;
+        public void Tick()
         {
-            if (!isReloaded)
+            if (_cooldown > 0)
             {
-                return Rand.DamageRange(MinDamage, MaxDamage) * ShotCount;
+                _cooldown--;
             }
-            else
+        }
+        public virtual Shot? Shot(Airplane shoter)
+        {
+            if (!IsReady)
             {
-                if (Reload != 0)
-                {
-                    Reload--;
-                    return Rand.DamageRange(MinDamage, MaxDamage) * ShotCount;
-                }
-                else
-                {
-                    Reload = ReloadCount;
-                    return 0;
-                }
+                WriteLine($"Самолет №{shoter.Id} - на перезарядке");
+                return null;
             }
+            Double damage = 0;
+            for (int shot = 0; shot < Shots; shot++)
+            {
+                damage += Rand.DamageRange(MinDamage, MaxDamage);
+                damage += shoter.Ammunition.Damage;
+            }
+            damage*=shoter.DamageMultiplierAgainst();
+            RegisterShot();
+            WriteLine($"Самолет №{shoter.Id} - произвел выстрел");
+            return new Shot(shoter,damage);
+            
         }
     }
 }

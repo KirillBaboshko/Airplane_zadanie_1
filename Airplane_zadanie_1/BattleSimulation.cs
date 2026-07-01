@@ -53,6 +53,10 @@ namespace Airplane_zadanie_1
         
         private void StartRound()
         {
+            foreach (Airplane plane in _squadrons.SelectMany(s => s.AliveMembers))
+            {
+                plane.Gun?.Tick();
+            }
 
             foreach (Squadron squadron in AliveSquadrons())
             {
@@ -97,7 +101,7 @@ namespace Airplane_zadanie_1
             //3. Все получили свой урон от выстрелов
             foreach (Shot shot in shoters)
             {
-                if (Rand.Chance(_PVO.HitСhance) && shot.Ammunition.Type == TypeOfAmmunitions.Rocet)
+                if (Rand.Chance(_PVO.HitСhance) && shot.Owner.Ammunition.Type == TypeOfAmmunitions.Rocet)
                 {
                     WriteLine($"ПВО отразило ракету от самолета №{shot.Owner.Id}");
                 }

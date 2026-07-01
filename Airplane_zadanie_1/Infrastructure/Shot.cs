@@ -9,32 +9,28 @@ namespace Airplane_zadanie_1.Infrastructure
 {
     public class Shot
     {
-        public Shot(Airplane owner, Airplane target,Guns gun, Ammunitions ammo)
+        public Shot(Airplane owner, Double resultDamage)
         {
             Owner = owner;
-            Target = target;
-            Gun= gun;
-            Ammunition = ammo;
+ 
+            ResultDamage=resultDamage;
         }
-        public Guns? Gun { get; }
-        public Ammunitions? Ammunition { get; }
+        public Double ResultDamage { get; }
         public Airplane Owner { get;  }
-        public Airplane Target { get; }
 
-        private Double Calculation()=>(Gun.Shot() + Ammunition.Damage * Gun.ShotCount) * Owner.DamageMultiplierAgainst(Target);
+        
         public void FixHit()
         {
-            if (Rand.Chance(Owner.EffectiveAccuracy + Owner.EffectiveAccuracy * Target.MarkBuff()))
+            if (Rand.Chance(Owner.EffectiveAccuracy + Owner.EffectiveAccuracy * Owner.Target.MarkBuff()))
             {
-                if (!Gun.IgnoreDodge && Target.TryDodge())
+                if (!Owner.Gun.IgnoreDodge && Owner.Target.TryDodge())
                 {
-                    WriteLine($"Самолет №{Target.Id} увернулся от выстрела самолета №{Owner.Id}");
+                    WriteLine($"Самолет №{Owner.Target.Id} увернулся от выстрела самолета №{Owner.Id}");
                     return;
-                }
-                Double resultDamage = Calculation();
-                WriteLine($"Самолет №{Owner.Id} попал по самолету №{Target.Id} c уроном {resultDamage}");
-                Target.TakeDamage(resultDamage);
-                Owner.Ammunition.SpecialEffects(Target);
+                } 
+                WriteLine($"Самолет №{Owner.Id} попал по самолету №{Owner.Target.Id} c уроном {ResultDamage}");
+                Owner.Target.TakeDamage(ResultDamage);
+                Owner.Ammunition.SpecialEffects(Owner.Target);
                 return;
             }
             WriteLine($"Самолет №{Owner.Id} промах");
