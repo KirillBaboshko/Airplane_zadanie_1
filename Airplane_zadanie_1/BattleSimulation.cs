@@ -11,6 +11,7 @@ namespace Airplane_zadanie_1
         private const Int32 MaxRounds = 1000;
 
         private readonly List<Squadron> _squadrons;
+        private readonly PVO _PVO=new PVO(0.5);
 
         public BattleSimulation(IEnumerable<Squadron> squadrons)
         {
@@ -27,8 +28,10 @@ namespace Airplane_zadanie_1
                 round++;
                 WriteLine($"Раунд {round}");
                 StartRound();
-                ExecuteRound();
-                Thread.Sleep(2500);
+                List<Airplane> order = _squadrons.SelectMany(s => s.AliveMembers).ToList();
+                ExecuteRound(order);
+                CalculatingLosses(order,round);
+                //Thread.Sleep(2500);
             }
 
             Announce(round);
@@ -54,9 +57,8 @@ namespace Airplane_zadanie_1
                     squadron.CommanderTarget = null;
             }
         }
-        private void ExecuteRound()
+        private void ExecuteRound(IReadOnlyList<Airplane> order)
         {
-            List<Airplane> order = _squadrons.SelectMany(s => s.AliveMembers).ToList();
 
             foreach (Airplane attacker in order)
             {
@@ -83,10 +85,28 @@ namespace Airplane_zadanie_1
                 }
 
                 Airplane target = attacker.Squadron.Strategy.SelectTarget(attacker, enemies, attacker.Squadron);
-                attacker.Attack(target);
+                if (Rand.Chance(_PVO.HitСhance))
+                {
+                    WriteLine($"ПВО отразило атаку самолета №{attacker.Id}");
+                }
+                else
+                {
+                    target.TakeDamage(attacker.Attack(target));
+                }
+                
+            }
+            
+        }
+        private void CalculatingLosses(IReadOnlyList<Airplane> order,Int32 round)
+        {
+            foreach (Airplane survivor in order)
+            {
+                if (survivor.Die())
+                {
+                    WriteLine($"Самолет №{survivor.Id} был сбит в раунде {round}");
+                }
             }
         }
-
         private void PrintRoster()
         {
             WriteLine("Состав эскадрилий");
@@ -102,16 +122,23 @@ namespace Airplane_zadanie_1
 
         private void Announce(int round)
         {
-            List<Squadron> alive = AliveSquadrons();
-
-            WriteLine("Бой окончен");
-            if (alive.Count == 1)
+            if (round == MaxRounds)
             {
-                WriteLine($"Победила эскадрилья «{alive[0].Name}» за {round} раунд(ов)!");
+                WriteLine($"Ничья по лимиту в {MaxRounds} раундов.");
             }
             else
             {
-                WriteLine($"Ничья по лимиту в {MaxRounds} раундов.");
+                List<Squadron> alive = AliveSquadrons();
+
+                WriteLine("Бой окончен");
+                if (alive.Count == 1)
+                {
+                    WriteLine($"Победила эскадрилья «{alive[0].Name}» за {round} раунд(ов)!");
+                }
+                else
+                {
+                    WriteLine($"Ничья, победила дружба, все эскадрильи мертвы за {round} раунд(ов)!");
+                }
             }
         }
     }

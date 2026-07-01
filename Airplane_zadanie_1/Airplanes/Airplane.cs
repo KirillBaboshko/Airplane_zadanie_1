@@ -43,6 +43,7 @@ namespace Airplane_zadanie_1.Airplanes
         public Double BaseArmor { get; }
         public Double BaseDodgeChance { get; }
         public Boolean IsAlive => isAlive;
+        public Boolean IsCanAtttack { get; private set; }
         public Int32 CountAmmo { get; set; }
         public Guns? Gun { get; set; }
         public Armors? Armor { get; set; }
@@ -90,13 +91,15 @@ namespace Airplane_zadanie_1.Airplanes
         public Double EffectiveDodgeChance => BaseDodgeChance + BaseDodgeChance*Armor.DodgeBuff;
         public Double EffectiveArmor => BaseArmor + BaseArmor * Armor.Protection;
  
-        public void Die()
+        public Boolean Die()
         {
             if (isAlive && HP<=0.0)
             {
                 isAlive = false;
                 _hp = 0;
+                return true;
             }
+            return false;
         }
         public Double MarkBuff() {
             if (isMarked)
@@ -131,66 +134,47 @@ namespace Airplane_zadanie_1.Airplanes
         public void ChancheHP(Double value)
         {
             _hp += value;
+            if (_hp<0)
+            {
+                _hp = 0;
+            }
         }
-        public virtual void TakeDamage(Airplane enemy)
+        public virtual void TakeDamage(Double damage)
         {
-            if(TryAbsorbHit())
+            if (TryAbsorbHit())
             {
                 return;
             }
-            //Console.WriteLine(enemy.Id);
-            Double ReceivedDamage = enemy.Gun.Shot() + enemy.Ammunition.Damage * enemy.Gun.ShotCount;
-            ReceivedDamage *= enemy.DamageMultiplierAgainst(this);
-            ReceivedDamage -= ReceivedDamage * EffectiveArmor;
-            ChancheHP(-ReceivedDamage);
-            switch (enemy.Ammunition.Type)
-            {
-                case TypeOfAmmunitions.Tracers:
-                    {
-                        this.Mark();
-                        break;
-                    }
-                case TypeOfAmmunitions.Explosive:
-                    {
-                        this.Stan();
-                        break;
-                    }
-            }
-            Die();
-            WriteLine($"Самолет №{enemy.Id} попал с уроном {ReceivedDamage} по самолету №{this.Id}, осталось {this.HP} HP");
-            
-    
+            ChancheHP(-damage);
         }
-        public virtual void Attack(Airplane target)
+        public virtual Double CalculateDamage(Airplane target)
+        {
+            Double ReceivedDamage = Gun.Shot() + Ammunition.Damage * Gun.ShotCount;
+            ReceivedDamage *= DamageMultiplierAgainst(target);
+            ReceivedDamage -= ReceivedDamage * target.EffectiveArmor;
+            return ReceivedDamage;
+        }
+        public virtual Double Attack(Airplane target)
         {
             if (Gun != null && isAlive && CountAmmo > 0)
             {
+                CountAmmo--;
                 if (Rand.Chance(EffectiveAccuracy + EffectiveAccuracy * target.MarkBuff()))
-                {
-                    if (!Gun.IgnoreDodge)
+                { 
+                    if (!Gun.IgnoreDodge && target.TryDodge())
                     {
-                        if (target.TryDodge())
-                        {
-                            WriteLine($"Самолет №{Id} промах");
-                        }
-                        else
-                        {
-                            CountAmmo--;
-                            target.TakeDamage(this);
-                        }
+                        WriteLine($"Самолет №{target.Id} увернулся");
+                        return 0;
                     }
-                    else
-                    {
-                        CountAmmo--;
-                        target.TakeDamage(this);
-
-                    }
+                    Double finalyDamage = CalculateDamage(target);
+                    WriteLine($"Самолет №{Id} попал с уроном {finalyDamage} по самолету №{target.Id}");
+                    return finalyDamage;
                 }
+                WriteLine($"Самолет №{Id} промах");
+                return 0;
             }
-            else
-            {
-                WriteLine($"Самолет №{Id} - боекомлект пуст");
-            }
+            WriteLine($"Самолет №{Id} - боекомлект пуст");
+            return 0;
 
         }
     }
