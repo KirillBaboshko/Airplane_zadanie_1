@@ -1,4 +1,5 @@
 ﻿using Airplane_zadanie_1.Airplanes;
+using Airplane_zadanie_1.Equipment.Guns;
 using Airplane_zadanie_1.Teams;
 using static System.Console;
 
@@ -85,9 +86,9 @@ namespace Airplane_zadanie_1
                 }
 
                 Airplane target = attacker.Squadron.Strategy.SelectTarget(attacker, enemies, attacker.Squadron);
-                if (Rand.Chance(_PVO.HitСhance))
+                if (Rand.Chance(_PVO.HitСhance) && attacker.Gun.Type == TypeOfGuns.TurbineRockets)
                 {
-                    WriteLine($"ПВО отразило атаку самолета №{attacker.Id}");
+                    WriteLine($"ПВО отразило ракету от самолета №{attacker.Id}");
                 }
                 else
                 {
