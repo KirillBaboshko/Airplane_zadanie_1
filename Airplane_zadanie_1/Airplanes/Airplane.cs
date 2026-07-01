@@ -1,6 +1,7 @@
 ﻿using Airplane_zadanie_1.Equipment.Ammunitions;
 using Airplane_zadanie_1.Equipment.Armors;
 using Airplane_zadanie_1.Equipment.Guns;
+using Airplane_zadanie_1.Infrastructure;
 using Airplane_zadanie_1.Teams;
 using static System.Console;
 
@@ -18,7 +19,6 @@ namespace Airplane_zadanie_1.Airplanes
         private Double _weight;
         private Boolean isStaned = false;
         private Boolean isMarked=false;
-        private Boolean isAlive = true;
         private static Int32 _Id;
         public Airplane(Double hp,Double weight, Double baseAccuracy ,Double baseDodgeChance,Double baseArmor)
         {
@@ -34,6 +34,7 @@ namespace Airplane_zadanie_1.Airplanes
         }
         public abstract TypeOfPlanes Type{  get; }
         public Squadron? Squadron { get; set; }
+        public Airplane? Target { get; private set; }
         public Int32 Id { get; }
         public Double Weight=> _weight;
         public Double HP => _hp;
@@ -42,7 +43,7 @@ namespace Airplane_zadanie_1.Airplanes
         public Double BaseAccuracy {get;}
         public Double BaseArmor { get; }
         public Double BaseDodgeChance { get; }
-        public Boolean IsAlive => isAlive;
+        public Boolean IsAlive { get; set; } = true;
         public Boolean IsCanAtttack { get; private set; }
         public Int32 CountAmmo { get; set; }
         public Guns? Gun { get; set; }
@@ -90,16 +91,9 @@ namespace Airplane_zadanie_1.Airplanes
         public Double EffectiveAccuracy => BaseAccuracy + BaseAccuracy*Gun.AccuracyBuff;
         public Double EffectiveDodgeChance => BaseDodgeChance + BaseDodgeChance*Armor.DodgeBuff;
         public Double EffectiveArmor => BaseArmor + BaseArmor * Armor.Protection;
- 
-        public Boolean Die()
+        public void Aim(IReadOnlyList<Airplane> enemies)
         {
-            if (isAlive && HP<=0.0)
-            {
-                isAlive = false;
-                _hp = 0;
-                return true;
-            }
-            return false;
+            Target=Squadron.Strategy.SelectTarget(this, enemies,Squadron);
         }
         public Double MarkBuff() {
             if (isMarked)
@@ -128,9 +122,9 @@ namespace Airplane_zadanie_1.Airplanes
         {
             return Rand.Chance(EffectiveDodgeChance);
         }
-        protected virtual Double DamageMultiplierAgainst(Airplane target) => 1.0;
+        public virtual Double DamageMultiplierAgainst(Airplane target) => 1.0;
         protected virtual Boolean TryAbsorbHit() => false;
-        public virtual Boolean TrySpecialAttack(IReadOnlyList<Airplane> enemies) => false;
+        public virtual void TrySpecialAttack(IReadOnlyList<Airplane> enemies) { }
         public void ChancheHP(Double value)
         {
             _hp += value;
@@ -145,37 +139,20 @@ namespace Airplane_zadanie_1.Airplanes
             {
                 return;
             }
+            damage-=(damage* EffectiveArmor);
             ChancheHP(-damage);
+            WriteLine($"Самолет №{Id} после попадания осталось {HP} HP");
         }
-        public virtual Double CalculateDamage(Airplane target)
+        public virtual Shot? Attack()
         {
-            Double ReceivedDamage = Gun.Shot() + Ammunition.Damage * Gun.ShotCount;
-            ReceivedDamage *= DamageMultiplierAgainst(target);
-            ReceivedDamage -= ReceivedDamage * target.EffectiveArmor;
-            return ReceivedDamage;
-        }
-        public virtual Double Attack(Airplane target)
-        {
-            if (Gun != null && isAlive && CountAmmo > 0)
+            if (Gun != null && IsAlive && CountAmmo > 0)
             {
                 CountAmmo--;
-                if (Rand.Chance(EffectiveAccuracy + EffectiveAccuracy * target.MarkBuff()))
-                { 
-                    if (!Gun.IgnoreDodge && target.TryDodge())
-                    {
-                        WriteLine($"Самолет №{target.Id} увернулся");
-                        return 0;
-                    }
-                    Double finalyDamage = CalculateDamage(target);
-                    WriteLine($"Самолет №{Id} попал с уроном {finalyDamage} по самолету №{target.Id}");
-                    return finalyDamage;
-                }
-                WriteLine($"Самолет №{Id} промах");
-                return 0;
+                WriteLine($"Самолет №{Id} - произвел выстрел");
+                return new Shot(this,Target,Gun,Ammunition);
             }
             WriteLine($"Самолет №{Id} - боекомлект пуст");
-            return 0;
-
+            return null;
         }
     }
 }

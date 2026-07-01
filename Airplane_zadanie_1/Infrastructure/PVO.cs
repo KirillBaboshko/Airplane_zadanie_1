@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Airplane_zadanie_1
+namespace Airplane_zadanie_1.Infrastructure
 {
     public class PVO
     {

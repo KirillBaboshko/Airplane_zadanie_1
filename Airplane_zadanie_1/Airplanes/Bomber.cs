@@ -12,16 +12,16 @@ namespace Airplane_zadanie_1.Airplanes
 
         public override TypeOfPlanes Type => TypeOfPlanes.Bomber;
 
-        public override bool TrySpecialAttack(IReadOnlyList<Airplane> enemies)
+        public override void TrySpecialAttack(IReadOnlyList<Airplane> enemies)
         {
             if (Armor is SpacedArmor)
             {
-                return false;
+                return;
             }
 
             if (!Rand.Chance(AreaBombChance))
             {
-                return false;
+                return;
             }
 
             WriteLine($"Бомбардировщик №{Id} начал бомбардировку");
@@ -34,7 +34,7 @@ namespace Airplane_zadanie_1.Airplanes
                 }
             }
 
-            return true;
+            return;
         }
     }
 }

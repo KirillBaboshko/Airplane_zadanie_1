@@ -31,6 +31,14 @@ namespace Airplane_zadanie_1.Teams
         public Guns TakeRandomGun() => Rand.Pick(_guns)();
 
         public Armors TakeRandomArmor() => Rand.Pick(_armors)();
-        public Ammunitions TakeRandomAmmunition() => Rand.Pick(_ammunitions)();
+
+        public Ammunitions TakeRandomAmmunition(TypeOfGuns gunType) 
+        {
+            if (gunType == TypeOfGuns.TurbineRockets)
+            {
+                return new Rocet();
+            }
+            return Rand.Pick(_ammunitions)(); 
+        }
     }
 }

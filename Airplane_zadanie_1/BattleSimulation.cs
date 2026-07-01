@@ -1,5 +1,7 @@
 ﻿using Airplane_zadanie_1.Airplanes;
+using Airplane_zadanie_1.Equipment.Ammunitions;
 using Airplane_zadanie_1.Equipment.Guns;
+using Airplane_zadanie_1.Infrastructure;
 using Airplane_zadanie_1.Teams;
 using static System.Console;
 
@@ -31,7 +33,10 @@ namespace Airplane_zadanie_1
                 StartRound();
                 List<Airplane> order = _squadrons.SelectMany(s => s.AliveMembers).ToList();
                 ExecuteRound(order);
+
+               //4.Проверка победителя
                 CalculatingLosses(order,round);
+
                 //Thread.Sleep(2500);
             }
 
@@ -60,14 +65,13 @@ namespace Airplane_zadanie_1
         }
         private void ExecuteRound(IReadOnlyList<Airplane> order)
         {
-
+            //1. Все прицелились
             foreach (Airplane attacker in order)
             {
                 if (!attacker.IsAlive)
                 {
                     continue;
                 }
-
                 if (attacker.IsStaned())
                 {
                     WriteLine($"Самолет {attacker.Id} пропускает ход (двигатель заглушён).");
@@ -80,30 +84,37 @@ namespace Airplane_zadanie_1
                     continue;
                 }
 
-                if (attacker.TrySpecialAttack(enemies))
+                attacker.TrySpecialAttack(enemies);
+                attacker.Aim(enemies); 
+            }
+            //2. Все стрельнули
+            List<Shot> shoters= new List<Shot>();
+            foreach (Airplane attacker in order)
+            { 
+                shoters.Add(attacker.Attack());
+                shoters = shoters.Where(s => s != null).ToList();
+            }
+            //3. Все получили свой урон от выстрелов
+            foreach (Shot shot in shoters)
+            {
+                if (Rand.Chance(_PVO.HitСhance) && shot.Ammunition.Type == TypeOfAmmunitions.Rocet)
                 {
-                    continue;
-                }
-
-                Airplane target = attacker.Squadron.Strategy.SelectTarget(attacker, enemies, attacker.Squadron);
-                if (Rand.Chance(_PVO.HitСhance) && attacker.Gun.Type == TypeOfGuns.TurbineRockets)
-                {
-                    WriteLine($"ПВО отразило ракету от самолета №{attacker.Id}");
+                    WriteLine($"ПВО отразило ракету от самолета №{shot.Owner.Id}");
                 }
                 else
                 {
-                    target.TakeDamage(attacker.Attack(target));
+                    shot.FixHit();
                 }
-                
             }
-            
+
         }
         private void CalculatingLosses(IReadOnlyList<Airplane> order,Int32 round)
         {
             foreach (Airplane survivor in order)
             {
-                if (survivor.Die())
+                if (survivor.HP==0)
                 {
+                    survivor.IsAlive=false;
                     WriteLine($"Самолет №{survivor.Id} был сбит в раунде {round}");
                 }
             }

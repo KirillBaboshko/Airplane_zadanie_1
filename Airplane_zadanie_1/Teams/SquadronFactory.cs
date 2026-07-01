@@ -15,7 +15,7 @@ namespace Airplane_zadanie_1.Teams
 
             airplane.MontageGun(_warehouse.TakeRandomGun());
             airplane.MontageArmor(_warehouse.TakeRandomArmor());
-            airplane.MontageAmmunition(_warehouse.TakeRandomAmmunition());
+            airplane.MontageAmmunition(_warehouse.TakeRandomAmmunition(airplane.Gun!.Type));
 
             return airplane;
         }

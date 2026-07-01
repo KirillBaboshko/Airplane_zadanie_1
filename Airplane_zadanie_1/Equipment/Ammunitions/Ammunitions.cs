@@ -6,7 +6,8 @@ namespace Airplane_zadanie_1.Equipment.Ammunitions
     {
         Tracers,
         Piercing,
-        Explosive
+        Explosive,
+        Rocet
     }
     public abstract class Ammunitions
     {
