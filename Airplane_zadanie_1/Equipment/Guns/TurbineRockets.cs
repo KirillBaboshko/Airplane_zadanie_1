@@ -1,14 +1,16 @@
-﻿using Airplane_zadanie_1.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿
 
 namespace Airplane_zadanie_1.Equipment.Guns
 {
-    internal class TurbineRockets : IGun
+    public class TurbineRockets : Guns
     {
-        public int id { get; } = 3;
-        public int minDamadge { get; } = 35;
-        public int maxDamadge { get; } = 40;
+        public override TypeOfGuns Type => TypeOfGuns.TurbineRockets;
+        public override Int32 MinDamage => 35;
+        public override Int32 MaxDamage => 40;
+        public override Int32 ShotCount => 1;
+        public Boolean IgnoreDodge => true;
+        public Boolean isReloaded => true;
+        public static Int32 ReloadCount => 1;
+        public override Double Weight => 150.0;
     }
 }

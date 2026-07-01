@@ -1,14 +1,16 @@
-﻿using Airplane_zadanie_1.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Airplane_zadanie_1.Airplanes;
+
 
 namespace Airplane_zadanie_1.Equipment.Ammunitions
 {
-    internal class Explosive:IAmmunition
+    public class Explosive: Ammunitions
     {
-        public int id { get; } = 3;
-        public double damage { get; } = 18.0;
-
+        public override TypeOfAmmunitions Type => TypeOfAmmunitions.Explosive;
+        public override Double Damage => 18.0;
+        public override Double Weight => 100.0;
+        public override void SpecialEffects(Airplane target) 
+        {
+            target.Stan();
+        }
     }
 }

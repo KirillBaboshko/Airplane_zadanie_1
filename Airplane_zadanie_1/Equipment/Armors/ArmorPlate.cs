@@ -1,13 +1,11 @@
-﻿using Airplane_zadanie_1.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿
 
 namespace Airplane_zadanie_1.Equipment.Armors
 {
-    internal class ArmorPlate:IArmor
+    public class ArmorPlate:Armors
     {
-        public int id { get; } = 2;
-        public double armor { get; } = 0.20;
+        public override TypeOfArmors Type => TypeOfArmors.ArmorPlate;
+        public override Double Protection => 0.20;
+        public override Double Weight => 750.0;
     }
 }

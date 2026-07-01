@@ -1,14 +1,16 @@
-﻿using Airplane_zadanie_1.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Airplane_zadanie_1.Airplanes;
+
 
 namespace Airplane_zadanie_1.Equipment.Ammunitions
 {
-    internal class Tracers : IAmmunition
+    public class Tracers : Ammunitions
     {
-        public int id { get; } = 1;
-        public double damage { get; } = 12.0;
-
+        public override TypeOfAmmunitions Type => TypeOfAmmunitions.Tracers;
+        public override Double Damage => 12.0;
+        public override Double Weight =>75.0;
+        public override void SpecialEffects(Airplane target)
+        {
+            target.Mark();
+        }
     }
 }
